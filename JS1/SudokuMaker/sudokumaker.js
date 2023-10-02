@@ -33,7 +33,7 @@ function sudokuValido(sudoku){
 }
 
 function editarColumnas(sudoku){
-    for(let x=0;x<9;x++){
+    for(let x=0;x<sudoku;x++){
         for(let j = 0;  j<9;j++){
             if(sudoku[x].includes(sudoku[x][j])){
                 cambiarnumeroPorUnoBueno(sudoku,x,j,sudoku[x][j]);
