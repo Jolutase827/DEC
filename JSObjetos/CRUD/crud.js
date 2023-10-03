@@ -48,6 +48,22 @@ class Products{
     getRating(){
         return this.#rating;
     }
+    
+    setName(name){
+        this.#name=name;
+    }
+    setDescription(description){
+         this.#description=description;
+    }
+    setCategory(category){
+        this.#category=category;
+    }
+    setPrice(price){
+        this.#price = price;
+    }
+    setRating(rating){
+        this.#rating = rating;
+    }
     equals(obj){
         if(obj instanceof products){
             return obj.getId() === this.getId();
@@ -95,11 +111,10 @@ function menu(articulo){
 }
 
 function eliminarproducto(articulos){
+    if(articulos.length>0){
     let objetoconIdAEliminar;
     let objetoAEliminar;
-    articulos.forEach(element => {
-        console.log(element);
-    });
+    mostrarFormatoJSON(articulos);
     
     do{
         objetoconIdAEliminar = prompt('Escribe el id del producto que quieres eliminar, tienes todos los elementos en la consola\nDeja vacio si quieres volver a menu');
@@ -114,9 +129,9 @@ function eliminarproducto(articulos){
         prompt(objetoAEliminar+"\n Se ha eliminado correctamente");
     }
     console.clear();
-    articulos.forEach(element => {
-        console.log(element);
-    });
+    }else{
+        prompt('No hay datos aún, inserta productos.');
+    }
     return articulos;
 
 
@@ -248,6 +263,11 @@ function filtrar(articulos){
 
 
 
+function mostrarFormatoJSON(elemento){
+    let json = JSON.stringify(elemento);
+    console.log(json);
+}
+
 function anyadirProducto(articulos){
     let id;
     let name;
@@ -296,6 +316,142 @@ function anyadirProducto(articulos){
     let producto = new Products(id,name,description,category,price,rating);
     articulos.push(producto);
     prompt(producto.toString()+` Se ha añadido con exito.\n Pulsa aceptar para ir a menu.`);
+}
+
+function actualizarProducto(articulos){
+    if(articulos.length>0){
+        let id;
+        let objetoAEliminar='';
+    
+        do{
+            articulos.forEach(element => {
+                console.log(element);
+            });
+            id = prompt('Escribe el id del producto que quieres actualizar, tienes todos los elementos en la consola\nDeja vacio si quieres volver a menu');
+            articulos.forEach(element => {
+                if(element.getId()==id)
+                    objetoAEliminar = element;
+            });
+            while(id!=''&&objetoAEliminar==''){
+                id = prompt('No existe ningún producto con ese ID.\nEscribe el id del producto que quieres eliminar, tienes todos los elementos en la consola\nDeja vacio si quieres volver a menu');
+                articulos.forEach(element => {
+                    if(element.getId()==id)
+                        objetoAEliminar= element;
+                });
+            }
+        }while(id!=''&&siONo(`¿Seguro que quieres que el producto  '${objetoAEliminar.getName()}' se actualice ("si" o "no"?)`)=='no');
+        console.clear();
+        let valor;
+        let precio;
+        let nombre;
+        let descripcion;
+        let categoria;
+        let valoracion;
+        let ratingValido;
+        do{
+            articulos.forEach(element => {
+                console.log(element);
+            });
+            valor = prompt('---------Modificar----------\n 1º Pulsa 1 para cambiar el nombre\n 2º Pulsa 2 para cambiar la descripción \n 3º Pulsa 3 para cambiar la categoría\n 4º Pulsa 4 para cambiar el precio\n 5º Pulsa 5 para cambiar la valoración\n6º Pulsa 6 para salir');
+            while(valor!='1'&&valor!='2'&&valor!='3'&&valor!='4'&&valor!='5'&&valor!='6'){
+                valor = prompt('NO HAS PULSADO 1,2,3,4,5 O 6\n---------Modificar----------\n 1º Pulsa 1 para cambiar el nombre\n 2º Pulsa 2 para cambiar la descripción \n 3º Pulsa 3 para cambiar la categoría\n 4º Pulsa 4 para cambiar el precio\n 5º Pulsa 5 para cambiar la valoración\n6º Pulsa 6 para salir');
+            }
+            switch(valor){
+                case("1"):
+                    
+                    do{
+                        nombre = prompt(`Escribe el nombre que quieres sustituir por '${objetoAEliminar.getName()}'.\n Deja vacío para ir a atras.`);
+                    }while(nombre!=''&&siONo(`¿Seguro que quieres que el producto cambie el nombre '${objetoAEliminar.getName()}' por '${nombre}' ("si" o "no"?)`)=='no');
+                    if(nombre!=""){
+                        articulos.forEach(element => {
+                            if(element.getId()==id)
+                                element.setName(nombre);
+                        });
+                        prompt(articulos.filter((name) => name.getId()==id)+"\nSe ha cambiado con exito el nombre");
+                    }
+                    console.clear();
+                    break;
+                case("2"):  
+                    
+                    do{
+                        descripcion = prompt(`Escribe la descripción que quieres sustituir por '${objetoAEliminar.getDescription()}'.\n Deja vacío para ir a atras.`);
+                    }while(descripcion!=''&&siONo(`¿Seguro que quieres que el producto cambie la descripción '${objetoAEliminar.getDescription()}' por '${descripcion}' ("si" o "no"?)`)=='no');
+                    if(descripcion!=""){
+                        articulos.forEach(element => {
+                            if(element.getId()==id)
+                                element.setDescription(descripcion);
+                        });
+                        prompt(articulos.filter((name) => name.getId()==id)+"\nSe ha cambiado con exito la descripción");
+                    }
+                    console.clear();
+                    break;
+                case('3'):
+                    
+                    do{
+                        categoria = prompt(`Escribe la categoria que quieres sustituir por '${objetoAEliminar.getCategory()}'.\n Deja vacío para ir a atras.`);
+                    }while(categoria!=''&&siONo(`¿Seguro que quieres que el producto cambie la categoria '${objetoAEliminar.getCategory()}' por '${categoria}' ("si" o "no"?)`)=='no');
+                    if(categoria!=""){
+                        articulos.forEach(element => {
+                            if(element.getId()==id)
+                                element.setCategory(categoria);
+                        });
+                        prompt(articulos.filter((name) => name.getId()==id)+"\nSe ha cambiado con exito la categoria");
+                    }
+                    console.clear();
+                    break;
+                case('4'):
+                    do{
+                        precio = prompt(`Escribe el precio que quieres sustituir por '${objetoAEliminar.getPrice()}€'.\n Deja vacío para ir a atras.`);
+                        while(isNaN(precio)&&precio!=''){
+                            precio = prompt(`Eso no es un número.\n Escribe el precio que quieres sustituir por '${objetoAEliminar.getPrice()}€'.\n Deja vacío para ir a atras.`);
+                        } 
+                    }while(precio!=''&&siONo(`¿Seguro que quieres que el producto cambie el precio '${objetoAEliminar.getPrice()}€' por '${precio}€' ("si" o "no"?)`)=='no');
+                    if(precio!=""){
+                        articulos.forEach(element => {
+                            if(element.getId()==id)
+                                element.setPrice(precio);
+                        });
+                        prompt(articulos.filter((name) => name.getId()==id)+"\nSe ha cambiado con exito el precio");
+                    }
+                    console.clear();
+                    break;
+                case('5'): 
+                    do{
+                        valoracion = prompt(`Escribe la valoración que quieres sustituir por '${objetoAEliminar.getRating()}/5' del 1 al 5.\n Deja vacío para ir a atras.`);
+                        do{
+                            ratingValido = true;
+                            if(isNaN(valoracion)&&valoracion!=''){
+                                valoracion = prompt(`Eso no es un número.\n Escribe la valoración que quieres sustituir por '${objetoAEliminar.getRating()}/5' del 1 al 5.\n Deja vacío para ir a atras.`);
+                            ratingValido = false;
+                            }
+                            if(ratingValido&&valoracion!=''){
+                                    if(parseInt(valoracion)<1||parseInt(valoracion)>5){
+                                        valoracion = prompt(`Tiene que ser un número del 1 al 5.\n \n Escribe la valoración que quieres sustituir por '${objetoAEliminar.getRating()}/5' del 1 al 5.\n Deja vacío para ir a atras.`);
+                                        ratingValido = false;
+                                    }
+                            }
+                        }while(!ratingValido);
+        
+                    }while(valoracion!=''&&siONo(`¿Seguro que quieres que el producto cambie la valoración '${objetoAEliminar.getRating()}' por '${valoracion}' ("si" o "no"?)`)=='no');
+                    if(valoracion!=""){
+                        articulos.forEach(element => {
+                            if(element.getId()==id)
+                                element.setRating(valoracion);
+                        });
+                        prompt(articulos.filter((name) => name.getId()==id)+"\nSe ha cambiado con exito la valoración");
+                    }
+                    console.clear();
+                    break;
+                default:
+                    console.clear();
+                    break;
+            }
+
+        }while(valor!='6');
+    }else{
+        prompt('No hay datos aún, inserta productos.');
+    }
+    return articulos;
 }
 function siONo(mensaje){
     let salida = prompt(mensaje);
