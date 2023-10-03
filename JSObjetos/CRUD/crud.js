@@ -62,7 +62,7 @@ main();
 
 function main(){
     let articulo = [];
-    while(menu(articulo));
+    while(articulo = menu(articulo));
     console.log('ADIOSSSS');
 }
 
@@ -73,20 +73,20 @@ function menu(articulo){
     }
     switch(valor){
         case("1"):
-            eliminarproducto(articulo);
-            return true;
+            articulo = eliminarproducto(articulo);
+            return articulo;
             break;
         case("2"):  
             anyadirProducto(articulo);
-            return true;
+            return articulo;
             break;
         case('3'):
             actualizarProducto(articulo);
-            return true;
+            return articulo;
             break;
         case('4'):
             mostrarProducto(articulo);
-            return true;
+            return articulo;
             break;
         default:
             return false;
@@ -95,7 +95,31 @@ function menu(articulo){
 }
 
 function eliminarproducto(articulos){
+    let objetoconIdAEliminar;
+    let objetoAEliminar;
+    articulos.forEach(element => {
+        console.log(element);
+    });
     
+    do{
+        objetoconIdAEliminar = prompt('Escribe el id del producto que quieres eliminar, tienes todos los elementos en la consola\nDeja vacio si quieres volver a menu');
+        objetoAEliminar = articulos.filter((name) => name.getId()==objetoconIdAEliminar);
+        while(objetoconIdAEliminar!=''&&objetoAEliminar==''){
+            objetoconIdAEliminar = prompt('No existe ningún producto con ese ID.\nEscribe el id del producto que quieres eliminar, tienes todos los elementos en la consola\nDeja vacio si quieres volver a menu');
+            objetoAEliminar=articulos.filter((name) => name.getId()==objetoconIdAEliminar);
+        }
+    }while(objetoconIdAEliminar!=''&&siONo(`¿Seguro que quieres que el producto se elimine '${objetoconIdAEliminar}' ("si" o "no"?)`)=='no');
+    if(objetoconIdAEliminar!=''){
+        articulos = articulos.filter((name) => name.getId()!=objetoconIdAEliminar);
+        prompt(objetoAEliminar+"\n Se ha eliminado correctamente");
+    }
+    console.clear();
+    articulos.forEach(element => {
+        console.log(element);
+    });
+    return articulos;
+
+
 }
 
 
@@ -128,14 +152,14 @@ function mostrarProductosPorNombre(articulos){
     }
     switch(valor){
         case("1"):
-            articulos.toSorted((a,b)=>a.getName()-b.getName()).forEach(element => {
+            articulos.toSorted((a,b)=>a.getName().localeCompare(b.getName())).forEach(element => {
                 console.log(element);
             });
             prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
             console.clear();
             break;
         case("2"):  
-            articulos.toSorted((a,b)=>b.getName()-a.getName()).forEach(element => {
+            articulos.toSorted((a,b)=>b.getName().localeCompare(a.getName())).forEach(element => {
                 console.log(element);
             });
             prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
@@ -194,7 +218,32 @@ function mostrarProductosPorValoracion(articulos){
     }
 }
 function filtrar(articulos){
-
+    let categoriaAFiltrar;
+    do{
+        categoriaAFiltrar = prompt('Escribe la categoría por la que se quiere filtrar')
+    }while(siONo(`¿Seguro que quieres filtrar por la categoría '${categoriaAFiltrar}' ("si" o "no"?)`)=='no');
+    let valor = prompt('---------Filtrar----------\n 1º Pulsa 1 para mostrar los productos con categoria '+categoriaAFiltrar+' ordenados por orden alfabético\n 2º Pulsa 2 para mostrar los productos con categoria '+categoriaAFiltrar+' ordenados por precio \n 3º Pulsa 3 para mostrar los productos con categoria '+categoriaAFiltrar+'ordenado por valoración\n 4º Pulsa 4 para volver a menu');
+    while(valor!='1'&&valor!='2'&&valor!='3'&&valor!='4'){
+        valor = prompt('NO HAS PULSADO 1,2,3,4 O 5\n---------Filtrar----------\n 1º Pulsa 1 para mostrar los productos con categoria '+categoriaAFiltrar+' ordenados por orden alfabético\n 2º Pulsa 2 para mostrar los productos con categoria '+categoriaAFiltrar+' ordenados por precio \n 3º Pulsa 3 para mostrar los productos con categoria '+categoriaAFiltrar+'ordenado por valoración\n 4º Pulsa 4 para volver a menu');
+    }
+    let articulo = [];
+    articulos.forEach(element => {
+        if(element.getCategory()==categoriaAFiltrar)
+            articulo.push(element);
+    });
+    switch(valor){
+        case("1"):
+            mostrarProductosPorNombre(articulo);
+            break;
+        case("2"):  
+            mostrarProductosPorPrecio(articulo);
+            break;
+        case('3'):
+            mostrarProductosPorValoracion(articulo);
+            break;
+        default:
+            break;
+    }
 }
 
 
@@ -243,7 +292,7 @@ function anyadirProducto(articulos){
                 }
             }
         }while(!ratingValido);
-    }while(siONo(`¿Seguro que quieres que el producto tenga como valoración  '${rating}€' ("si" o "no"?)`)=='no');
+    }while(siONo(`¿Seguro que quieres que el producto tenga como valoración  '${rating}/5' ("si" o "no"?)`)=='no');
     let producto = new Products(id,name,description,category,price,rating);
     articulos.push(producto);
     prompt(producto.toString()+` Se ha añadido con exito.\n Pulsa aceptar para ir a menu.`);
