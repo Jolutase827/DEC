@@ -152,14 +152,14 @@ function mostrarProductosPorPrecio(articulos){
     }
     switch(valor){
         case("1"):
-            articulos.toSorted((a,b)=>a.getPrice()-b.getPrice()).forEach(element => {
+            articulos.toSorted((a,b)=>b.getPrice()-a.getPrice()).forEach(element => {
                 console.log(element);
             });
             prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
             console.clear();
             break;
         case("2"):  
-            articulos.toSorted((a,b)=>b.getPrice()-a.getPrice()).forEach(element => {
+            articulos.toSorted((a,b)=>a.getPrice()-b.getPrice()).forEach(element => {
                 console.log(element);
             });
             prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
@@ -176,14 +176,14 @@ function mostrarProductosPorValoracion(articulos){
     }
     switch(valor){
         case("1"):
-            articulos.toSorted((a,b)=>a.getRating()-b.getRating()).forEach(element => {
+            articulos.toSorted((a,b)=>b.getRating()-a.getRating()).forEach(element => {
                 console.log(element);
             });
             prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
             console.clear();
             break;
         case("2"):  
-            articulos.toSorted((a,b)=>b.getRating()-a.getRating()).forEach(element => {
+            articulos.toSorted((a,b)=>a.getRating()-b.getRating()).forEach(element => {
                 console.log(element);
             });
             prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
