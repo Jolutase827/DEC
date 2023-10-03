@@ -146,9 +146,9 @@ function mostrarProductosPorNombre(articulos){
     }
 }
 function mostrarProductosPorPrecio(articulos){
-    let valor = prompt('---------ORDEN ALFABETICO----------\n 1º Pulsa 1 para mostrar de mayor precio a menor\n 2º Pulsa 2 para mostrar demenor precio a mayor\n 3º Pulsa 3 para ir a menu');
+    let valor = prompt('---------Mostrar Precio----------\n 1º Pulsa 1 para mostrar de mayor precio a menor\n 2º Pulsa 2 para mostrar demenor precio a mayor\n 3º Pulsa 3 para ir a menu');
     while(valor!='1'&&valor!='2'&&valor!='3'&&valor!='4'&&valor!='5'){
-        valor = prompt('NO HAS PULSADO 1,2,3,4 O 5\n---------Mostrar Precio----------\n 1º Pulsa 1 para mostrar de la a-z\n 2º Pulsa 2 para mostrar de la z-a\n 3º Pulsa 3 para ir a menu');
+        valor = prompt('NO HAS PULSADO 1,2,3,4 O 5\n---------Mostrar Precio----------\n1º Pulsa 1 para mostrar de mayor precio a menor\n 2º Pulsa 2 para mostrar demenor precio a mayor\n 3º Pulsa 3 para ir a menu');
     }
     switch(valor){
         case("1"):
@@ -170,7 +170,28 @@ function mostrarProductosPorPrecio(articulos){
     }
 }
 function mostrarProductosPorValoracion(articulos){
-
+    let valor = prompt('---------Mostrar por Valoración----------\n 1º Pulsa 1 para mostrar de mayor valoración a menor\n 2º Pulsa 2 para mostrar de menor valoración a mayor\n 3º Pulsa 3 para ir a menu');
+    while(valor!='1'&&valor!='2'&&valor!='3'&&valor!='4'&&valor!='5'){
+        valor = prompt('NO HAS PULSADO 1,2,3,4 O 5\n---------Mostrar por Valoración----------\n 1º Pulsa 1 para mostrar de mayor valoración a menor\n 2º Pulsa 2 para mostrar de menor valoración a mayor\n 3º Pulsa 3 para ir a menu');
+    }
+    switch(valor){
+        case("1"):
+            articulos.toSorted((a,b)=>a.getRating()-b.getRating()).forEach(element => {
+                console.log(element);
+            });
+            prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
+            console.clear();
+            break;
+        case("2"):  
+            articulos.toSorted((a,b)=>b.getRating()-a.getRating()).forEach(element => {
+                console.log(element);
+            });
+            prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
+            console.clear();
+            break;
+        case('3'):
+            break;
+    }
 }
 function filtrar(articulos){
 
