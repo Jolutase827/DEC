@@ -128,14 +128,14 @@ function mostrarProductosPorNombre(articulos){
     }
     switch(valor){
         case("1"):
-            articulos.toSorted((a,b)=>a.getName().compareTo(b.getName())).forEach(element => {
+            articulos.toSorted((a,b)=>a.getName()-b.getName()).forEach(element => {
                 console.log(element);
             });
             prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
             console.clear();
             break;
         case("2"):  
-            articulos.toSorted((a,b)=>b.getName().compareTo(a.getName())).forEach(element => {
+            articulos.toSorted((a,b)=>b.getName()-a.getName()).forEach(element => {
                 console.log(element);
             });
             prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
