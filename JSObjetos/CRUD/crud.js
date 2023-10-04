@@ -1,68 +1,68 @@
 class Products{
-    #id;
-    #name;
-    #description;
-    #category;
-    #price;
-    #rating;
+    id;
+    name;
+    description;
+    category;
+    price;
+    rating;
     constructor(id,name,description,category,price,rating){
-        this.#id = id;
-        this.#name = name;
-        this.#category = category;
-        this.#description = description;
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.description = description;
         if(isNaN(price)){
-            this.#price = null;
+            this.price = null;
         }else{
-            this.#price = price;
+            this.price = price;
         }
         if(isNaN(rating)){
-            this.#rating = null;
+            this.rating = null;
         }else if(parseInt(rating)<1){
-            this.#rating = 1;
+            this.rating = 1;
         }else if(parseInt(rating)>5){
-            this.#rating = 6;
+            this.rating = 6;
         }else{
-            this.#rating = parseInt(rating);
+            this.rating = parseInt(rating);
         }
     }
 
     toString(){
-        return `Producto: id= ${this.getId()}, name= ${this.#name}, description= ${this.#description}, category= ${this.#category}, price= ${this.#price}, rating= ${this.#rating}.`;
+        return `Producto: id= ${this.getId()}, name= ${this.name}, description= ${this.description}, category= ${this.category}, price= ${this.price}, rating= ${this.rating}.`;
     }
 
     getId(){
-        return this.#id;
+        return this.id;
     }
     getName(){
-        return this.#name;
+        return this.name;
     }
     getDescription(){
-        return this.#description;
+        return this.description;
     }
     getCategory(){
-        return this.#category;
+        return this.category;
     }
     getPrice(){
-        return this.#price;
+        return this.price;
     }
     getRating(){
-        return this.#rating;
+        return this.rating;
     }
     
     setName(name){
-        this.#name=name;
+        this.name=name;
     }
     setDescription(description){
-         this.#description=description;
+         this.description=description;
     }
     setCategory(category){
-        this.#category=category;
+        this.category=category;
     }
     setPrice(price){
-        this.#price = price;
+        this.price = price;
     }
     setRating(rating){
-        this.#rating = rating;
+        this.rating = rating;
     }
     equals(obj){
         if(obj instanceof products){
@@ -167,16 +167,12 @@ function mostrarProductosPorNombre(articulos){
     }
     switch(valor){
         case("1"):
-            articulos.toSorted((a,b)=>a.getName().localeCompare(b.getName())).forEach(element => {
-                console.log(element);
-            });
+            mostrarFormatoJSON(articulos.toSorted((a,b)=>a.getName().localeCompare(b.getName())));
             prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
             console.clear();
             break;
         case("2"):  
-            articulos.toSorted((a,b)=>b.getName().localeCompare(a.getName())).forEach(element => {
-                console.log(element);
-            });
+            mostrarFormatoJSON(articulos.toSorted((a,b)=>b.getName().localeCompare(a.getName())));
             prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
             console.clear();
             break;
@@ -191,16 +187,12 @@ function mostrarProductosPorPrecio(articulos){
     }
     switch(valor){
         case("1"):
-            articulos.toSorted((a,b)=>b.getPrice()-a.getPrice()).forEach(element => {
-                console.log(element);
-            });
+            mostrarFormatoJSON(articulos.toSorted((a,b)=>b.getPrice()-a.getPrice()));
             prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
             console.clear();
             break;
         case("2"):  
-            articulos.toSorted((a,b)=>a.getPrice()-b.getPrice()).forEach(element => {
-                console.log(element);
-            });
+            mostrarFormatoJSON(articulos.toSorted((a,b)=>a.getPrice()-b.getPrice()));
             prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
             console.clear();
             break;
@@ -215,16 +207,12 @@ function mostrarProductosPorValoracion(articulos){
     }
     switch(valor){
         case("1"):
-            articulos.toSorted((a,b)=>b.getRating()-a.getRating()).forEach(element => {
-                console.log(element);
-            });
+            mostrarFormatoJSON(articulos.toSorted((a,b)=>b.getRating()-a.getRating()));
             prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
             console.clear();
             break;
         case("2"):  
-            articulos.toSorted((a,b)=>a.getRating()-b.getRating()).forEach(element => {
-                console.log(element);
-            });
+            mostrarFormatoJSON(articulos.toSorted((a,b)=>a.getRating()-b.getRating()));
             prompt('Los elementos se han mostrado por la consola. \n Pulsa aceptar para ir a menú');
             console.clear();
             break;
@@ -313,7 +301,7 @@ function anyadirProducto(articulos){
             }
         }while(!ratingValido);
     }while(siONo(`¿Seguro que quieres que el producto tenga como valoración  '${rating}/5' ("si" o "no"?)`)=='no');
-    let producto = new Products(id,name,description,category,price,rating);
+    const producto = new Products(id,name,description,category,price,rating);
     articulos.push(producto);
     prompt(producto.toString()+` Se ha añadido con exito.\n Pulsa aceptar para ir a menu.`);
 }
@@ -324,9 +312,7 @@ function actualizarProducto(articulos){
         let objetoAEliminar='';
     
         do{
-            articulos.forEach(element => {
-                console.log(element);
-            });
+            mostrarFormatoJSON(articulos);
             id = prompt('Escribe el id del producto que quieres actualizar, tienes todos los elementos en la consola\nDeja vacio si quieres volver a menu');
             articulos.forEach(element => {
                 if(element.getId()==id)
@@ -349,9 +335,7 @@ function actualizarProducto(articulos){
         let valoracion;
         let ratingValido;
         do{
-            articulos.forEach(element => {
-                console.log(element);
-            });
+            mostrarFormatoJSON(articulos);
             valor = prompt('---------Modificar----------\n 1º Pulsa 1 para cambiar el nombre\n 2º Pulsa 2 para cambiar la descripción \n 3º Pulsa 3 para cambiar la categoría\n 4º Pulsa 4 para cambiar el precio\n 5º Pulsa 5 para cambiar la valoración\n6º Pulsa 6 para salir');
             while(valor!='1'&&valor!='2'&&valor!='3'&&valor!='4'&&valor!='5'&&valor!='6'){
                 valor = prompt('NO HAS PULSADO 1,2,3,4,5 O 6\n---------Modificar----------\n 1º Pulsa 1 para cambiar el nombre\n 2º Pulsa 2 para cambiar la descripción \n 3º Pulsa 3 para cambiar la categoría\n 4º Pulsa 4 para cambiar el precio\n 5º Pulsa 5 para cambiar la valoración\n6º Pulsa 6 para salir');
@@ -460,7 +444,3 @@ function siONo(mensaje){
     }
     return salida;
 }
-
-
-
-
