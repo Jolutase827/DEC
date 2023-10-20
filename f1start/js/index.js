@@ -5,6 +5,7 @@ let circle3 = document.querySelectorAll('#semaforo-3>div[class*="circle"]');
 let circle4 = document.querySelectorAll('#semaforo-4>div[class*="circle"]');
 let circle5 = document.querySelectorAll('#semaforo-5>div[class*="circle"]');
 let allCircles = document.querySelectorAll('div[class*="circle"]');
+let arrayBestTime=[];
 let main = document.getElementById('main');
 let active = true;
 let timeOuts=[];
@@ -14,29 +15,40 @@ let time = document.getElementById('time');
 let tiempoMomento;
 let acabado;
 let tiempoClicado;
-/*function tiempo(){
-    lilisecs = parseInt(lilisecs);
-    lilisecs++;
-    if(lilisecs>999){
-        lilisecs = 0;
-        if(lilisecs<10){
-            lilisecs = "00"+lilisecs;
-        }else if(lilisecs<100){
-            lilisecs = "0"+lilisecs;
-        }
+let secA;
+let milsA;
+const evento = ()=>{
+    if(active){
+        time.textContent = "00:000";
+        ponerEnRojo();
+        active = false;
     }else{
-        sec = parseInt(sec);
-        sec++;
-        if(sec<10){
-            sec = "0"+sec;
+        clearAllTeamOuts();
+        allCircles.forEach(element => {
+            element.style.background = "gray";
+        });
+        if(!acabado){
+            time.textContent = "TOO FAST";
+        }else{
+            tiempoClicado = window.performance.now();
+            let sec = parseInt((tiempoClicado-tiempoMomento)/1000);
+            let mils= (tiempoClicado>999)?((String)(tiempoClicado-tiempoMomento)).substring(((String)(tiempoClicado-tiempoMomento)).length-3,((String)(tiempoClicado-tiempoMomento)).length):(tiempoClicado-tiempoMomento);
+            time.textContent = `${(sec<10)?"0"+sec:sec}:${(mils<100)?"0"+mils:mils}`;
+            if(arrayBestTime.length==0){
+                arrayBestTime[0]=sec;
+                arrayBestTime[1] = mils;
+                bestTime.textContent = `${(sec<10)?"0"+sec:sec}:${(mils<100)?"0"+mils:mils}`;
+            }else if(arrayBestTime[0]>=sec&&arrayBestTime[1]>mils){
+                arrayBestTime[0]=sec;
+                arrayBestTime[1] = mils;
+                bestTime.textContent = `${(sec<10)?"0"+sec:sec}:${(mils<100)?"0"+mils:mils}`;
+            }
         }
+        active = true;
     }
-    time.textContent = `${sec}:${lilisecs}`;
+    
 
-}*/
-
-
-
+};
 function ponerEnRojo(){
     let aleatorio = Math.floor((Math.random()*4000)+4000);
     acabado = false;
@@ -68,10 +80,15 @@ function ponerEnRojo(){
             element.style.background = "green";
         });
     },aleatorio);
-    acabado=true;
-    tiempoMomento = window.performance.now();
+    timeOuts[5] = setTimeout(()=>{
+        tiempoMomento = window.performance.now();
+    },aleatorio);
+    timeOuts[6] = setTimeout(()=>{
+        acabado=true;
+    },aleatorio);
+    
+    
 }
-
 function clearAllTeamOuts(){
     timeOuts.forEach(element => {
         clearTimeout(element);
@@ -86,28 +103,5 @@ function comprobarAllCirclesGreen(){
     });
 }
 
-main.addEventListener('click',()=>{
-    if(active){
-        tiempoMomento = new Date();
-        time.textContent = "00:000";
-        ponerEnRojo();
-        active = false;
-    }else{
-        clearAllTeamOuts();
-        allCircles.forEach(element => {
-            element.style.background = "gray";
-        });
-        if(!acabado){
-            time.textContent = "TOO FAST";
-        }else{
-            tiempoClicado = new Date();
-            let sec = tiempoMomento.getSeconds()-tiempoClicado.getSeconds();
-            let mils= tiempoMomento.getMilliseconds()-tiempoClicado.getMilliseconds();
-            time.textContent = `${(sec<10)?"0"+sec:sec}:${(mils<100)?"00"+mils:(mils<10)?"0"+mils:mils}`;
-        }
-        active = true;
-        
-    }
-    
-
-});
+main.addEventListener('click',evento);
+document.addEventListener('keydown',evento);
