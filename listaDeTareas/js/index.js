@@ -15,7 +15,7 @@ if(localStorage.getItem('tareas')!=undefined){
     tareaslist = JSON.parse(localStorage.getItem('tareas'));
     if(tareaslist.length!=0){
         tareaslist.forEach(element => {
-            createTarea(element.nombre,document.getElementById('contenedorTareas'),tareaslist.length-1,element.id);
+            createTarea(element.nombre,document.getElementById('contenedorTareas'),element.id);
         });
     }
 }else{
@@ -31,7 +31,7 @@ document.getElementById("boton").addEventListener('click',()=>{
         }else{
             tareaslist.push(new Tarea(tareaslist[tareaslist.length-1].id+1,tareaAñadir));
         }
-        createTarea(tareaAñadir,document.getElementById('contenedorTareas'),tareaslist.length-1,tareaslist[tareaslist.length-1].id);
+        createTarea(tareaAñadir,document.getElementById('contenedorTareas'),tareaslist[tareaslist.length-1].id);
     }
 });
 
@@ -39,13 +39,14 @@ document.getElementById("boton").addEventListener('click',()=>{
 window.addEventListener('beforeunload', ()=> {
     localStorage.setItem('tareas',JSON.stringify(tareaslist));    
 });
-function createTarea(tarea,tareas,posicion,id){
+function createTarea(tarea,tareas,id){
+    const objeto =  tareaslist.filter((t)=>t.id==id);
     const div = document.createElement('div');
     const span = document.createElement('span');
     const emotis = document.createElement('div');
     const tick = document.createElement('i');
     const basura = document.createElement('i');
-    if(tareaslist[posicion].hecho){
+    if(objeto[0].hecho){
         div.classList='tarea';
     }else{
         div.classList='tareaEcha';
@@ -60,12 +61,12 @@ function createTarea(tarea,tareas,posicion,id){
     div.append(emotis);
     tareas.append(div);
     tick.addEventListener('click',()=>{
-        if(tareaslist[posicion].hecho){
+        if(objeto[0].hecho){
             tick.parentElement.parentElement.classList="tareaEcha";
-            tareaslist[posicion].hecho = false;
+            objeto[0].hecho = false;
         }else{
             tick.parentElement.parentElement.classList ="tarea";
-            tareaslist[posicion].hecho = true;
+            objeto[0].hecho = true;
         }
         
     });
