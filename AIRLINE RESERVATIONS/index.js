@@ -30,7 +30,12 @@ class Passenger{
         this.id = id;
         this.name = name;
         this.password = password;
-
+    }
+    static newpassenger(pasenger){
+        let passenger = new Passenger(pasenger.id,pasenger.name,pasenger.password);
+        passenger.reservations = pasenger.reservations;
+        passenger.money = pasenger.money;
+        return passenger;
     }
 
     addSeat(seat){
@@ -139,6 +144,8 @@ const buyTickets = (dato,paso,idUser,objects,datos,planeNumber,seats) =>{
         let objeto = objects.filter((user)=> user.id==idUser); 
         objeto[0].addSeat(reservation);
         seats.push(reservation);
+        localStorage.setItem('seats',JSON.stringify(seats));
+        localStorage.setItem('objects', JSON.stringify(objects)) ;
         return buyTickets(dato,0,idUser,objects,datos,planeNumber,seats);
     }
 
@@ -163,6 +170,7 @@ const createUser = (objects,passengers)=>{
     else
         numero = objects[objects.length-1].id+1;
     objects.push(new Passenger(numero,name,password));
+    localStorage.setItem('objects',JSON.stringify(objects));
 }
 const login = (dato,objects,passengers,planeNumber,seats) =>{
     if(dato==null)
@@ -215,6 +223,7 @@ const makePlaneFly= (passengers,objects,planeNumber,seats)=>{
     prompt("The fly with Israel direction nº"+planeNumber+" fligth with "+seatToFly.length+" passengers, you can see all the reservations in the console");
     console.clear();
     planeNumber++;
+    localStorage.setItem('planenumber',JSON.stringify(planeNumber));
     return menu(null,passengers,objects,planeNumber,seats);
 };
 
@@ -287,5 +296,26 @@ const menu = (dato=null,passengers=0,objects=[],planeNumber=1,seats=[]) =>{
         return menu(prompt("YOU DIDN'T PRESS 1, 2, 3, 4 OR 5\n----------Welcome to ultimate airlines services-----------\n What do you want?\n 1º Press 1 to add passenger.\n 2º Press 2 to fly the plane\n 3º Press 3 for show the passengers.\n 4ºPress 4 to exit."),passengers,objects,planeNumber,seats);
     
 };
-menu();
+if(localStorage.getItem('objects')!=undefined||localStorage.getItem('seats')!=undefined||localStorage.getItem('planenumber')!=undefined){
+    let objects = JSON.parse(localStorage.getItem('objects'));
+    let goodObjects= [];
+    objects.forEach(element => {
+        goodObjects.push(Passenger.newpassenger(element));
+    });
+    let seats;
+    let planeNumber;
+    if(localStorage.getItem('seats')!=undefined){
+    seats= JSON.parse(localStorage.getItem('seats'));
+    }else{
+        seats = [];
+    }
+    if(localStorage.getItem('planenumber')!=undefined){
+        planeNumber = JSON.parse(localStorage.getItem('planenumber'));
+    }else{
+        planeNumber = 1;
+    }
+    menu(null,null,goodObjects,planeNumber,seats);
+}else{
+    menu();
+}
 
